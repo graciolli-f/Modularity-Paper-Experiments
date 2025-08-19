@@ -23,3 +23,37 @@ mkdir -p with-rubric/initial
 ### Commit initial state
 git add .
 git commit -m "Initial setup with baseline todo app"
+
+## Experiment Workflow
+
+### Experiment X (replace "X" with experiment nummber or name)
+git checkout -b experiment-X-baseline
+
+#### Baseline
+cd baseline
+cp -r initial working
+cd working && cursor .
+**Prompt**: "Add priority field validation to the Todo model"
+cd ..
+cp -r working/* after-exp-X/
+rm -rf working
+git add after-exp-X
+git commit -m "[commit message]"
+
+#### With Rubric
+cd ../with-rubric
+cp -r initial working
+cp -r .rubric working/
+cd working && cursor .
+*Ensure Cursor has access to rubric folder and .cursorrules file*
+**Prompt**: "Add priority field validation to the Todo model"
+cd ..
+cp -r working/* after-exp-X/
+rm -rf working
+git add after-exp-X
+git commit -m "[commit message]"
+
+# Done with Experiment X
+cd ..
+git checkout main
+git merge experiment-X
