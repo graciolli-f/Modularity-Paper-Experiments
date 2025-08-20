@@ -1,0 +1,67 @@
+module TodoData {
+  @ "Data model for Todo items"
+  @ "Represents a task with title, completion status, and priority"
+
+  type: "data"
+  
+  location: "models/todo.js"
+  
+  interface {
+    @ "Constructor with validation"
+    public constructor(id: string, title: string, completed?: boolean, priority?: string) -> Todo
+    
+    @ "Instance methods"
+    public toggle() -> void
+    
+    @ "Validation methods"
+    public validatePriority(priority: string) -> boolean
+    
+    @ "Static validation methods"
+    public static isValidPriority(priority: string) -> boolean
+  }
+  
+  state {
+    @ "Instance properties"
+    public id: string
+    public title: string
+    public completed: boolean
+    public priority: string
+    
+    @ "Valid priority values"
+    private readonly VALID_PRIORITIES: string[]
+  }
+  
+  imports {
+    @ "No external imports needed for basic model"
+    @ "Keep this module self-contained"
+  }
+  
+  constraints {
+    @ "Data validation requirements"
+    require pattern.input_validation @ "Validate all constructor parameters"
+    require pattern.defensive @ "Guard against invalid inputs"
+    
+    @ "Priority validation"
+    require pattern.validation @ "Priority must be validated"
+    require pattern.immutable @ "Priority constants should be immutable"
+    
+    @ "Error handling"
+    require pattern.throw_on_error @ "Throw descriptive errors for invalid data"
+    
+    @ "No console output in production"
+    deny io.console.* @ "No logging in data models"
+    
+    @ "No network operations"
+    deny io.network.* @ "Data models don't make network calls"
+    
+    @ "Export restrictions"
+    deny exports ["VALID_PRIORITIES"] @ "Keep internal constants private"
+    
+    @ "Mutability constraints"
+    deny pattern.mutation @ "Prefer immutable updates where possible"
+    
+    @ "Size constraints"
+    warn file.lines > 100
+    deny file.lines > 150
+  }
+}
