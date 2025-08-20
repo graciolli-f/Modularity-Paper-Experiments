@@ -1,4 +1,4 @@
-const TodoStore = require('./initial/storage/store');
+const TodoStore = require('./storage/store');
 const ConsoleRenderer = require('./views/renderer');
 
 class TodoApp {
