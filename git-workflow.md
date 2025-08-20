@@ -27,13 +27,13 @@ git commit -m "Initial setup with baseline todo app"
 ## Experiment Workflow
 
 ### Experiment X (replace "X" with experiment nummber or name)
-git checkout -b experiment-X-baseline
+git checkout -b experiment-X
 
 #### Baseline
 cd baseline
 cp -r initial working
 cd working && cursor .
-**Prompt**: "Add priority field validation to the Todo model"
+**Prompt**: "[prompt X]"
 cd ..
 cp -r working/* after-exp-X/
 rm -rf working
@@ -46,7 +46,7 @@ cp -r initial working
 cp -r .rubric working/
 cd working && cursor .
 *Ensure Cursor has access to rubric folder and .cursorrules file*
-**Prompt**: "Add priority field validation to the Todo model"
+**Prompt**: "[prompt X]"
 cd ..
 cp -r working/* after-exp-X/
 rm -rf working
