@@ -43,7 +43,6 @@ git commit -m "[commit message]"
 #### With Rubric
 cd ../with-rubric
 cp -r initial working
-cp -r .rubric working/
 cd working && cursor .
 *Ensure Cursor has access to rubric folder and .cursorrules file*
 **Prompt**: "[prompt X]"
