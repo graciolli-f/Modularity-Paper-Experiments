@@ -1,64 +1,56 @@
-module TodoData {
+module TodoModel {
   @ "Data model for Todo items"
-  @ "Represents a task with title, completion status, and priority"
+  @ "Handles todo creation, validation, and state management"
 
   type: "data"
   
   location: "models/todo.js"
   
   interface {
-    @ "Constructor with validation"
-    public constructor(id: string, title: string, completed?: boolean, priority?: string) -> Todo
-    
-    @ "Instance methods"
+    @ "Todo constructor and methods"
+    public constructor(id: any, title: string, completed?: boolean, priority?: string)
     public toggle() -> void
     
-    @ "Validation methods"
+    @ "Priority validation method"
     public validatePriority(priority: string) -> boolean
     
-    @ "Static validation methods"
-    public static isValidPriority(priority: string) -> boolean
+    @ "Properties"
+    public readonly id: any
+    public title: string
+    public completed: boolean
+    public priority: string
   }
   
   state {
     @ "Instance properties"
-    public id: string
-    public title: string
-    public completed: boolean
-    public priority: string
-    
-    @ "Valid priority values"
-    private readonly VALID_PRIORITIES: string[]
+    private id: any
+    private title: string
+    private completed: boolean
+    private priority: string
   }
   
   imports {
     @ "No external imports needed for basic model"
-    @ "Keep this module self-contained"
+    deny imports ["*"]
   }
   
   constraints {
-    @ "Data validation requirements"
-    require pattern.input_validation @ "Validate all constructor parameters"
-    require pattern.defensive @ "Guard against invalid inputs"
+    @ "Model validation requirements"
+    require pattern.input_validation @ "All inputs must be validated"
+    require pattern.error_handling @ "Throw meaningful errors"
+    require pattern.immutability @ "Don't mutate inputs"
     
-    @ "Priority validation"
+    @ "Priority validation constraints"
     require pattern.validation @ "Priority must be validated"
-    require pattern.immutable @ "Priority constants should be immutable"
     
-    @ "Error handling"
-    require pattern.throw_on_error @ "Throw descriptive errors for invalid data"
+    @ "Constructor constraints"
+    require pattern.defensive @ "Validate all constructor parameters"
     
-    @ "No console output in production"
-    deny io.console.* @ "No logging in data models"
-    
-    @ "No network operations"
-    deny io.network.* @ "Data models don't make network calls"
+    @ "No I/O operations"
+    deny io.* @ "Models should not perform I/O"
     
     @ "Export restrictions"
-    deny exports ["VALID_PRIORITIES"] @ "Keep internal constants private"
-    
-    @ "Mutability constraints"
-    deny pattern.mutation @ "Prefer immutable updates where possible"
+    allow exports ["Todo", "default"]
     
     @ "Size constraints"
     warn file.lines > 100

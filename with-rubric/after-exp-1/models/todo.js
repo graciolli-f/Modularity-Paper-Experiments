@@ -1,36 +1,39 @@
 class Todo {
     constructor(id, title, completed = false, priority = 'medium') {
-      if (!title || title.trim() === '') {
-        throw new Error('Title is required');
+      // Input validation - defensive programming
+      if (!title || typeof title !== 'string' || title.trim() === '') {
+        throw new Error('Title is required and must be a non-empty string');
+      }
+      
+      if (typeof completed !== 'boolean') {
+        throw new Error('Completed must be a boolean value');
+      }
+      
+      // Validate priority using dedicated method
+      if (!this.validatePriority(priority)) {
+        throw new Error('Priority must be one of: low, medium, high');
       }
 
-      if (!Todo.isValidPriority(priority)) {
-        throw new Error(`Invalid priority: ${priority}. Must be one of: ${Todo.VALID_PRIORITIES.join(', ')}`);
-      }
-
+      // Assign properties (immutable approach - don't mutate inputs)
       this.id = id;
-      this.title = title;
+      this.title = title.trim(); // Create new string, don't mutate input
       this.completed = completed;
-      this.priority = priority.toLowerCase().trim();
-    }
-    
-    static get VALID_PRIORITIES() {
-      return ['low', 'medium', 'high'];
-    }
-    
-    static isValidPriority(priority) {
-      if (!priority || typeof priority !== 'string') {
-        return false;
-      }
-      return Todo.VALID_PRIORITIES.includes(priority.toLowerCase().trim());
-    }
-    
-    validatePriority(priority) {
-      return Todo.isValidPriority(priority);
+      this.priority = priority;
     }
     
     toggle() {
       this.completed = !this.completed;
+    }
+    
+    validatePriority(priority) {
+      // Input validation - ensure we have a string
+      if (typeof priority !== 'string') {
+        return false;
+      }
+      
+      // Valid priority values
+      const validPriorities = ['low', 'medium', 'high'];
+      return validPriorities.includes(priority.toLowerCase());
     }
   }
   
