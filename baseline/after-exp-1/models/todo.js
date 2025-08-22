@@ -6,15 +6,21 @@ class Todo {
 
       // Validate priority field
       const validPriorities = ['low', 'medium', 'high'];
-      if (!validPriorities.includes(priority.toLowerCase())) {
-        throw new Error('Priority must be one of: low, medium, high');
+      if (priority !== null && priority !== undefined) {
+        if (typeof priority !== 'string') {
+          throw new Error('Priority must be a string');
+        }
+        if (!validPriorities.includes(priority.toLowerCase())) {
+          throw new Error(`Priority must be one of: ${validPriorities.join(', ')}`);
+        }
+        this.priority = priority.toLowerCase();
+      } else {
+        this.priority = 'medium';
       }
 
       this.id = id;
       this.title = title;
       this.completed = completed;
-      this.priority = priority.toLowerCase();
-
     }
     
     toggle() {

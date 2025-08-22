@@ -1,4 +1,4 @@
-const TodoStore = require('./initial/storage/store');
+const TodoStore = require('./storage/store');
 const ConsoleRenderer = require('./views/renderer');
 
 class TodoApp {
@@ -8,9 +8,11 @@ class TodoApp {
   }
   
   run() {
-    // Simple demo
-    this.store.add('Write paper');
-    this.store.add('Run experiments');
+    // Simple demo with different priorities
+    this.store.add('Write paper', 'high');
+    this.store.add('Run experiments', 'medium');
+    this.store.add('Review literature', 'low');
+    this.store.add('Submit deadline'); // Should default to medium
     this.renderer.render(this.store.getAll());
   }
 }
