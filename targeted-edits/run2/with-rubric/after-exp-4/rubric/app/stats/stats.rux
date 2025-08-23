@@ -1,0 +1,65 @@
+module StatsUtils {
+  @ "Pure utility functions for counting and analyzing todo statistics"
+  @ "No side effects, deterministic outputs"
+
+  type: "utility"
+  
+  location: "stats/stats.js"
+  
+  interface {
+    @ "Statistics counting functions"
+    public countByStatus(todos: Todo[]) -> {completed: number, pending: number, total: number}
+    public getCompletionPercentage(todos: Todo[]) -> number
+    public getStatusBreakdown(todos: Todo[]) -> {completed: Todo[], pending: Todo[]}
+    
+    @ "Validation functions"
+    public validateTodoArray(value: unknown) -> boolean
+    
+    @ "Helper constants"
+    public readonly STATUS_TYPES: {COMPLETED: string, PENDING: string}
+  }
+  
+  state {
+    @ "No mutable state allowed in utilities"
+    @ "Use module-level constants instead"
+    private readonly STATUS_TYPES = { COMPLETED: 'completed', PENDING: 'pending' }
+  }
+  
+  imports {
+    @ "Todo model for type checking"
+    allow "../models/todo" as Todo
+    
+    @ "No framework imports"
+    deny imports ["react", "vue", "@angular/*"]
+    
+    @ "No side-effect imports"
+    deny imports ["../storage/*", "../views/*"]
+  }
+  
+  constraints {
+    @ "Pure functions only"
+    deny io.*  @ "No I/O operations"
+    deny pattern.side_effects
+    deny pattern.mutations
+    
+    @ "No async operations"
+    deny pattern.async
+    deny pattern.promises
+    
+    @ "Deterministic behavior"
+    require pattern.deterministic
+    deny pattern.random_without_seed
+    deny pattern.date_now @ "Use passed timestamps"
+    
+    @ "Error handling"
+    require pattern.defensive @ "Validate inputs"
+    
+    @ "Export all public functions"
+    require exports ["[!_]*"]
+    
+    @ "Size constraints"
+    warn file.lines > 200
+    deny file.lines > 400
+    warn function.lines > 20
+  }
+}

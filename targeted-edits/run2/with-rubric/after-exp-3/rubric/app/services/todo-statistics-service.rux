@@ -1,0 +1,63 @@
+module TodoStatisticsService {
+  @ "Business logic for todo statistics calculations"
+  @ "Orchestrates todo data analysis and provides statistical insights"
+
+  type: "service"
+  
+  location: "services/todo-statistics-service.js"
+  
+  interface {
+    @ "Public service methods for statistics"
+    public getTotalCount(todos: Todo[]) -> number
+    public getCompletedCount(todos: Todo[]) -> number
+    public getPendingCount(todos: Todo[]) -> number
+    public getCompletionRate(todos: Todo[]) -> number
+    public getStatistics(todos: Todo[]) -> TodoStatistics
+    
+    @ "Business operations for analysis"
+    public generateSummary(todos: Todo[]) -> StatisticsSummary
+    public analyzeProgress(todos: Todo[]) -> ProgressAnalysis
+  }
+  
+  state {
+    @ "No service-level state needed for statistics calculations"
+    @ "All operations are stateless and pure"
+  }
+  
+  imports {
+    @ "Model imports"
+    allow "../models/todo" as {Todo}
+    
+    @ "Cannot import UI or stores"
+    deny imports ["../components/*", "../stores/*", "../views/*"]
+    
+    @ "Cannot import storage - data should be passed in"
+    deny imports ["../storage/*"]
+  }
+  
+  constraints {
+    @ "Pure calculation functions"
+    require pattern.pure_functions
+    require pattern.input_validation
+    
+    @ "No I/O operations - only calculations"
+    deny io.*
+    deny pattern.side_effects
+    
+    @ "No async operations - calculations are synchronous"
+    deny pattern.async
+    deny pattern.promises
+    
+    @ "Error handling for invalid inputs"
+    require pattern.defensive
+    require pattern.error_handling
+    
+    @ "Export only public interface"
+    deny exports ["_*"]
+    
+    @ "Keep functions focused and small"
+    warn file.lines > 150
+    deny file.lines > 250
+    warn function.lines > 15
+  }
+}

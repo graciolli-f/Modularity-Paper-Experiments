@@ -1,0 +1,67 @@
+module TodoStore {
+  @ "State management for todo data with dynamic filtering"
+  @ "Coordinates between UI and data layer"
+
+  type: "store"
+  
+  location: "storage/store.js"
+  
+  interface {
+    @ "Todo store with filtering capabilities"
+    public new TodoStore() -> {
+      @ "Core methods"
+      add: (title: string) -> Todo,
+      get: (id: number) -> Todo?,
+      getAll: () -> Todo[],
+      delete: (id: number) -> boolean,
+      
+      @ "Filtering methods"
+      filter: (criteria: FilterCriteria) -> Todo[],
+      setFilter: (field: string, value: any, operation?: string) -> void,
+      removeFilter: (field: string) -> void,
+      clearFilters: () -> void,
+      getFiltered: () -> Todo[]
+    }
+  }
+  
+  state {
+    @ "Internal state shape"
+    private _todos: Map<number, Todo>
+    private _nextId: number
+    private _activeFilters: Map<string, any>
+  }
+  
+  imports {
+    @ "Model for todo items"
+    allow "../models/todo" as Todo
+    
+    @ "Cannot import network or UI libraries"
+    deny imports ["../views/*"]
+    deny imports ["axios", "fetch"]
+  }
+  
+  constraints {
+    @ "Data management patterns"
+    require pattern.immutable_updates
+    require pattern.input_validation
+    
+    @ "No UI concerns"
+    deny io.console.* @ "Store should not handle UI feedback"
+    
+    @ "No network operations - this is a data store layer"
+    deny io.network.*
+    
+    @ "Storage is allowed for persistence"
+    allow io.localStorage.*
+    
+    @ "Map operations are allowed"
+    allow pattern.map_operations
+    
+    @ "Export restrictions"
+    deny exports ["_*"] @ "No private member exports"
+    
+    @ "Size constraints"
+    warn file.lines > 150
+    deny file.lines > 300
+  }
+}

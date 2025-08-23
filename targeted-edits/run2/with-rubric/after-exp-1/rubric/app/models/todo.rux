@@ -1,0 +1,59 @@
+module TodoModel {
+  @ "Data model for Todo items"
+  @ "Handles todo creation, validation, and state management"
+
+  type: "data"
+  
+  location: "models/todo.js"
+  
+  interface {
+    @ "Todo constructor and methods"
+    public constructor(id: any, title: string, completed?: boolean, priority?: string)
+    public toggle() -> void
+    
+    @ "Priority validation method"
+    public validatePriority(priority: string) -> boolean
+    
+    @ "Properties"
+    public readonly id: any
+    public title: string
+    public completed: boolean
+    public priority: string
+  }
+  
+  state {
+    @ "Instance properties"
+    private id: any
+    private title: string
+    private completed: boolean
+    private priority: string
+  }
+  
+  imports {
+    @ "No external imports needed for basic model"
+    deny imports ["*"]
+  }
+  
+  constraints {
+    @ "Model validation requirements"
+    require pattern.input_validation @ "All inputs must be validated"
+    require pattern.error_handling @ "Throw meaningful errors"
+    require pattern.immutability @ "Don't mutate inputs"
+    
+    @ "Priority validation constraints"
+    require pattern.validation @ "Priority must be validated"
+    
+    @ "Constructor constraints"
+    require pattern.defensive @ "Validate all constructor parameters"
+    
+    @ "No I/O operations"
+    deny io.* @ "Models should not perform I/O"
+    
+    @ "Export restrictions"
+    allow exports ["Todo", "default"]
+    
+    @ "Size constraints"
+    warn file.lines > 100
+    deny file.lines > 150
+  }
+}
