@@ -24,7 +24,7 @@ The following table maps the experiment sections from the paper to the correspon
 | **4.2.2 - Experiment 3** | Architectural recognition | `targeted-edits/run1/after-exp-3`, `targeted-edits/run2/after-exp-3` |
 | **4.2.2 - Experiment 4** | Module integration | `targeted-edits/run1/after-exp-4`, `targeted-edits/run2/after-exp-4` |
 
-
+**Note**: Code is in the process of being added to directories. Some directories outlined above may not be complete.  
 
 ## Repository Structure
 
