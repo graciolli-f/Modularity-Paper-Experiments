@@ -46,12 +46,7 @@ The following table maps the experiment sections from the paper to the correspon
 - **Run 1**: Rubric v0.1.0
 - **Run 2**: Rubric v1.0.0 (includes validation)
 
-
-## Contributing
-
-[placeholder]
-
 ## License
 
-[placeholder]
+MIT
 
